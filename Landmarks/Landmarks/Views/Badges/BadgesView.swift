@@ -41,6 +41,7 @@ struct BadgesView: View {
                     ToggleBadgesLabel(isExpanded: isExpanded)
                         .frame(width: Constants.badgeShowHideButtonWidth,
                                height: Constants.badgeShowHideButtonHeight)
+                        .accessibilityIdentifier("BadgesView.toggleLabel.\(isExpanded ? "hide" : "show")")
                 }
                 // Adds Liquid Glass to the button.
                 .buttonStyle(.glass)
@@ -52,7 +53,7 @@ struct BadgesView: View {
                 .accessibilityIdentifier("BadgesView.toggleButton")
             }
             .frame(width: Constants.badgeFrameWidth)
-            .accessibilityIdentifier("BadgesView.containerStack")
+            .accessibilityIdentifier("BadgesView.containerStack.\(isExpanded ? "expanded" : "collapsed")")
         }
         .accessibilityIdentifier("BadgesView.glassContainer")
     }
@@ -61,21 +62,27 @@ struct BadgesView: View {
 private struct BadgeLabel: View {
     var badge: Badge
     var body: some View {
-        Image(systemName: badge.symbolName)
-            .foregroundStyle(.white)
-            .font(.system(size: badge.fontSize()))
-            .fontWeight(.medium)
-            .frame(width: Constants.badgeSize, height: Constants.badgeSize)
-            .background(content: {
-                Image(systemName: "hexagon.fill")
-                    .foregroundStyle(badge.badgeColor)
-                    .font(.system(size: Constants.hexagonSize))
-                    .frame(width: Constants.badgeSize,
-                           height: Constants.badgeSize)
-            })
-            .padding(Constants.badgeImagePadding)
-            .accessibilityLabel(Text(badge.badgeName))
-            .accessibilityIdentifier("BadgeLabel.image.\(badge.id)")
+        ZStack {
+            // Background hexagon
+            Image(systemName: "hexagon.fill")
+                .foregroundStyle(badge.badgeColor)
+                .font(.system(size: Constants.hexagonSize))
+                .frame(width: Constants.badgeSize,
+                       height: Constants.badgeSize)
+                .accessibilityHidden(true)
+                .accessibilityIdentifier("BadgeLabel.backgroundHex.\(badge.id)")
+            
+            // Foreground symbol
+            Image(systemName: badge.symbolName)
+                .foregroundStyle(.white)
+                .font(.system(size: badge.fontSize()))
+                .fontWeight(.medium)
+                .accessibilityIdentifier("BadgeLabel.symbol.\(badge.id)")
+        }
+        .frame(width: Constants.badgeSize, height: Constants.badgeSize)
+        .padding(Constants.badgeImagePadding)
+        .accessibilityLabel(Text(badge.badgeName))
+        .accessibilityIdentifier("BadgeLabel.image.\(badge.id)")
     }
 }
 
@@ -89,7 +96,7 @@ private struct ToggleBadgesLabel: View {
         .font(.system(size: Constants.toggleButtonFontSize))
         .fontWeight(.medium)
         .imageScale(.large)
-        .accessibilityIdentifier("BadgesView.toggleLabel.\(isExpanded ? "hide" : "show")")
+        // Note: a specific identifier is also applied at the call site inside the Button label.
     }
 }
 

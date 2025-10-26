@@ -29,8 +29,10 @@ struct LandmarksSelectionList: View {
                                         landmarks.append(landmark)
                                     }
                                 }
+                                .accessibilityIdentifier("LandmarksSelectionList.row.\(landmark.id)")
                         }
                     }
+                    .accessibilityIdentifier("LandmarksSelectionList.section.\(continent.name)")
                 }
             }
             #if os(iOS)
@@ -43,8 +45,11 @@ struct LandmarksSelectionList: View {
                 } label: {
                     Image(systemName: "checkmark")
                 }
+                .accessibilityIdentifier("LandmarksSelectionList.toolbar.doneButton")
             }
+            .accessibilityIdentifier("LandmarksSelectionList.list")
         }
+        .accessibilityIdentifier("LandmarksSelectionList.navigationStack")
     }
 }
 

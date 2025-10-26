@@ -132,11 +132,16 @@ private struct LandmarkInspectorBadgeView: View {
                     }
                 }
                 .accessibilityIdentifier("Inspector.activities.form")
+                .accessibilityElement(children: .contain)
+                .accessibilityIdentifier("Inspector.activities.container")
             } else {
-                Spacer()
-                Text("There isn’t a badge for this landmark.", comment: "Text that indicates the landmark doesn't have a badge.")
-                    .accessibilityIdentifier("Inspector.activities.noneMessage")
-                Spacer()
+                VStack {
+                    Spacer()
+                    Text("There isn’t a badge for this landmark.", comment: "Text that indicates the landmark doesn't have a badge.")
+                        .accessibilityIdentifier("Inspector.activities.noneMessage")
+                    Spacer()
+                }
+                .accessibilityIdentifier("Inspector.activities.noneContainer")
             }
         }
         .accessibilityIdentifier("Inspector.activities.root")
@@ -202,4 +207,3 @@ private struct BadgeProgressView: View {
         .environment(modelData)
         .accessibilityIdentifier("LandmarkDetailInspectorView.previewRoot")
 }
-

@@ -17,9 +17,11 @@ struct LandmarkCollectionsMenu: View {
             ForEach(modelData.userCollections) {
                 @Bindable var collection = $0
                 Toggle(collection.name, isOn: $collection[contains: landmark])
+                    .accessibilityIdentifier("collectionsMenu.toggle.collection.\(collection.id)")
             }
         }
         .menuIndicator(.hidden)
+        .accessibilityIdentifier("collectionsMenu.menu")
     }
 }
 

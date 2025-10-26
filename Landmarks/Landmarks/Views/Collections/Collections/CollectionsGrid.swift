@@ -19,10 +19,13 @@ struct CollectionsGrid: View {
                         CollectionListItemView(collection: collection)
                     }
                     .buttonStyle(.plain)
+                    .accessibilityIdentifier("collectionsGrid.item.link.\(collection.id)")
                 }
             }
+            .accessibilityIdentifier("collectionsGrid.grid")
         }
         .padding(.trailing, Constants.standardPadding)
+        .accessibilityIdentifier("collectionsGrid.scrollView")
     }
     
     private var columns: [GridItem] {

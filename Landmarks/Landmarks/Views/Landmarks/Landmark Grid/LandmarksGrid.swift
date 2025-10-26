@@ -18,15 +18,20 @@ struct LandmarksGrid: View {
                 ForEach(landmarks, id: \.id) { landmark in
                     if forEditing {
                         LandmarkGridItemView(landmark: landmark)
+                            .accessibilityIdentifier("LandmarksGrid.item.editing.\(landmark.id)")
                     } else {
                         NavigationLink(destination: LandmarkDetailView(landmark: landmark)) {
                             LandmarkGridItemView(landmark: landmark)
+                                .accessibilityIdentifier("LandmarksGrid.item.content.\(landmark.id)")
                         }
                         .buttonStyle(.plain)
+                        .accessibilityIdentifier("LandmarksGrid.item.link.\(landmark.id)")
                     }
                 }
             }
+            .accessibilityIdentifier("LandmarksGrid.grid")
         }
+        .accessibilityIdentifier("LandmarksGrid.scrollView")
     }
     
     private var columns: [GridItem] {

@@ -19,18 +19,24 @@ struct CollectionDetailDisplayView: View {
                     .fontWeight(.medium)
                     .fixedSize(horizontal: false, vertical: true)
                     .padding([.top])
+                    .accessibilityIdentifier("CollectionDetail.title.\(collection.id)")
                 Spacer()
             }
+            .accessibilityIdentifier("CollectionDetail.titleRow")
             HStack {
                 Text(collection.description)
                     .font(.title2)
                     .padding([.top, .bottom])
                     .fixedSize(horizontal: false, vertical: true)
+                    .accessibilityIdentifier("CollectionDetail.description.\(collection.id)")
                 Spacer()
             }
+            .accessibilityIdentifier("CollectionDetail.descriptionRow")
             LandmarksGrid(landmarks: $collection.landmarks, forEditing: false)
+                .accessibilityIdentifier("CollectionDetail.landmarksGrid.\(collection.id)")
         }
         .padding([.leading, .trailing], Constants.leadingContentInset)
+        .accessibilityIdentifier("CollectionDetail.root.\(collection.id)")
     }
 }
 
@@ -40,3 +46,4 @@ struct CollectionDetailDisplayView: View {
 
     CollectionDetailDisplayView(collection: previewCollection)
 }
+

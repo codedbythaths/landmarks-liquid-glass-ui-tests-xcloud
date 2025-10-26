@@ -22,18 +22,23 @@ struct LandmarkDetailView: View {
                     .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
                     .backgroundExtensionEffect()
                     .flexibleHeaderContent()
+                    .accessibilityIdentifier("LandmarkDetail.headerImage.\(landmark.id)")
 
                 VStack(alignment: .leading) {
                     Text(landmark.name)
                         .font(.title)
                         .fontWeight(.bold)
+                        .accessibilityIdentifier("LandmarkDetail.title.\(landmark.id)")
 
                     Text(landmark.description)
                         .textSelection(.enabled)
+                        .accessibilityIdentifier("LandmarkDetail.description.\(landmark.id)")
                 }
                 .padding(.leading, Constants.leadingContentInset)
                 .padding(.trailing, Constants.leadingContentInset * 2)
+                .accessibilityIdentifier("LandmarkDetail.textContainer.\(landmark.id)")
             }
+            .accessibilityIdentifier("LandmarkDetail.contentStack.\(landmark.id)")
         }
         .flexibleHeaderScrollView()
         .toolbar {
@@ -41,14 +46,17 @@ struct LandmarkDetailView: View {
 
             ToolbarItem {
                 ShareLink(item: landmark, preview: landmark.sharePreview)
+                    .accessibilityIdentifier("LandmarkDetail.toolbar.share.\(landmark.id)")
             }
 
             ToolbarSpacer(.fixed)
             
             ToolbarItemGroup {
                 LandmarkFavoriteButton(landmark: landmark)
+                    .accessibilityIdentifier("LandmarkDetail.toolbar.favorite.\(landmark.id)")
 
                 LandmarkCollectionsMenu(landmark: landmark)
+                    .accessibilityIdentifier("LandmarkDetail.toolbar.collectionsMenu.\(landmark.id)")
             }
             
             ToolbarSpacer(.fixed)
@@ -58,10 +66,12 @@ struct LandmarkDetailView: View {
                     modelData.selectedLandmark = landmark
                     modelData.isLandmarkInspectorPresented.toggle()
                 }
+                .accessibilityIdentifier("LandmarkDetail.toolbar.info.\(landmark.id)")
             }
         }
         .toolbar(removing: .title)
         .ignoresSafeArea(edges: .top)
+        .accessibilityIdentifier("LandmarkDetail.scrollView.\(landmark.id)")
     }
 }
 

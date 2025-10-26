@@ -17,7 +17,9 @@ struct LandmarkFavoriteButton: View {
             modelData.toggleFavorite(landmark)
         } label: {
             FavoriteButtonLabel(isFavorite: modelData.isFavorite(landmark))
+                .accessibilityIdentifier("FavoriteButton.label.\(landmark.id)")
         }
+        .accessibilityIdentifier("FavoriteButton.button.\(landmark.id)")
     }
 }
 

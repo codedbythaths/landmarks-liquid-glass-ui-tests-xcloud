@@ -21,8 +21,10 @@ struct LandmarksSelectionListItem: View {
                        height: Constants.landmarkSelectionImageSize.height)
                 .cornerRadius(Constants.landmarkSelectionImageCornerRadius)
                 .padding(.trailing, Constants.standardPadding)
+                .accessibilityIdentifier("LandmarksSelectionListItem.image.\(landmark.id)")
             Text(landmark.name)
                 .font(.title3)
+                .accessibilityIdentifier("LandmarksSelectionListItem.name.\(landmark.id)")
             Spacer()
             if landmarks.contains(landmark) {
                 Image(systemName: "checkmark.circle.fill")
@@ -30,16 +32,17 @@ struct LandmarksSelectionListItem: View {
                     .foregroundStyle(.white, .indigo)
                     .font(.title)
                     .padding(.trailing, Constants.standardPadding)
-
+                    .accessibilityIdentifier("LandmarksSelectionListItem.indicator.selected.\(landmark.id)")
             } else {
                 Image(systemName: "circle")
                     .symbolRenderingMode(.palette)
                     .foregroundStyle(.gray)
                     .font(.title)
                     .padding(.trailing, Constants.standardPadding)
-
+                    .accessibilityIdentifier("LandmarksSelectionListItem.indicator.unselected.\(landmark.id)")
             }
         }
+        .accessibilityIdentifier("LandmarksSelectionListItem.container.\(landmark.id)")
     }
 }
 

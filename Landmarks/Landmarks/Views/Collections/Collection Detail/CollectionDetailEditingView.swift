@@ -26,22 +26,27 @@ struct CollectionDetailEditingView: View {
             // Adjust the vertical padding due to the TextEditor.
             .padding(.bottom, collection.isFavoritesCollection ? 0 : -2)
             .padding([.top])
+            .accessibilityIdentifier("CollectionEdit.title.header")
             
             VStack {
                 if collection.isFavoritesCollection {
                     HStack {
                         Text(collection.name)
                             .font(.largeTitle)
+                            .accessibilityIdentifier("CollectionEdit.title.readonly.\(collection.id)")
                         Spacer()
                     }
                     .padding()
+                    .accessibilityIdentifier("CollectionEdit.title.readonly.row")
                 } else {
                     TextField("Name", text: $collection.name)
                         .padding()
                         .textFieldStyle(.plain)
+                        .accessibilityIdentifier("CollectionEdit.title.textField.\(collection.id)")
                 }
             }
             .background(Constants.editingBackgroundStyle, in: RoundedRectangle(cornerRadius: Constants.cornerRadius))
+            .accessibilityIdentifier("CollectionEdit.title.container")
             
             HStack {
                 Text("Description")
@@ -52,6 +57,7 @@ struct CollectionDetailEditingView: View {
             .fontWeight(.semibold)
             .padding(.bottom, -2) // Adjust the vertical padding due to the TextEditor.
             .padding([.top])
+            .accessibilityIdentifier("CollectionEdit.description.header")
             
             if !collection.isFavoritesCollection {
                 VStack() {
@@ -59,8 +65,10 @@ struct CollectionDetailEditingView: View {
                         .scrollContentBackground(.hidden)
                         .frame(height: Constants.textEditorHeight)
                         .padding()
+                        .accessibilityIdentifier("CollectionEdit.description.textEditor.\(collection.id)")
                 }
                 .background(Constants.editingBackgroundStyle, in: RoundedRectangle(cornerRadius: Constants.cornerRadius))
+                .accessibilityIdentifier("CollectionEdit.description.container")
             }
             
             HStack {
@@ -71,6 +79,7 @@ struct CollectionDetailEditingView: View {
             .font(.title2)
             .fontWeight(.semibold)
             .padding([.top])
+            .accessibilityIdentifier("CollectionEdit.landmarks.header")
             
             VStack {
                 HStack {
@@ -79,13 +88,17 @@ struct CollectionDetailEditingView: View {
                         isShowingLandmarksSelection.toggle()
                     }
                     .padding([.top, .leading, .trailing])
+                    .accessibilityIdentifier("CollectionEdit.landmarks.selectButton")
                 }
                 LandmarksGrid(landmarks: $collection.landmarks, forEditing: true)
                     .padding([.leading, .trailing, .bottom])
+                    .accessibilityIdentifier("CollectionEdit.landmarks.grid.\(collection.id)")
             }
             .background(Constants.editingBackgroundStyle, in: RoundedRectangle(cornerRadius: Constants.cornerRadius))
+            .accessibilityIdentifier("CollectionEdit.landmarks.container")
         }
         .padding([.leading, .trailing], Constants.leadingContentInset)
+        .accessibilityIdentifier("CollectionEdit.root.\(collection.id)")
         
     }
 }

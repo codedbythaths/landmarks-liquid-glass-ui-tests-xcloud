@@ -21,31 +21,42 @@ struct LandmarksSplitView: View {
                     ForEach(NavigationOptions.mainPages) { page in
                         NavigationLink(value: page) {
                             Label(page.name, systemImage: page.symbolName)
+                                .accessibilityIdentifier("SplitView.sidebar.row.\(page.id)")
                         }
+                        .accessibilityIdentifier("SplitView.sidebar.link.\(page.id)")
                     }
                 }
+                .accessibilityIdentifier("SplitView.sidebar.section.mainPages")
             }
             .navigationDestination(for: NavigationOptions.self) { page in
                 NavigationStack(path: $modelData.path) {
                     page.viewForPage()
+                        .accessibilityIdentifier("SplitView.sidebar.pageContent.\(page.id)")
                 }
                 .navigationDestination(for: Landmark.self) { landmark in
                     LandmarkDetailView(landmark: landmark)
+                        .accessibilityIdentifier("SplitView.sidebar.landmarkDetail.\(landmark.id)")
                 }
                 .navigationDestination(for: LandmarkCollection.self) { collection in
                     CollectionDetailView(collection: collection)
+                        .accessibilityIdentifier("SplitView.sidebar.collectionDetail.\(collection.id)")
                 }
                 .showsBadges()
+                .accessibilityIdentifier("SplitView.sidebar.navigationStack")
             }
             .frame(minWidth: 150)
+            .accessibilityIdentifier("SplitView.sidebar.list")
         } detail: {
             NavigationStack(path: $modelData.path) {
                 NavigationOptions.landmarks.viewForPage()
+                    .accessibilityIdentifier("SplitView.detail.rootPage.landmarks")
             }
             .navigationDestination(for: Landmark.self) { landmark in
                 LandmarkDetailView(landmark: landmark)
+                    .accessibilityIdentifier("SplitView.detail.landmarkDetail.\(landmark.id)")
             }
             .showsBadges()
+            .accessibilityIdentifier("SplitView.detail.navigationStack")
         }
         // Adds global search, where the system positions the search bar automatically
         // in content views.
@@ -55,10 +66,13 @@ struct LandmarksSplitView: View {
         .inspector(isPresented: $modelData.isLandmarkInspectorPresented) {
             if let landmark = modelData.selectedLandmark {
                 LandmarkDetailInspectorView(landmark: landmark, inspectorIsPresented: $modelData.isLandmarkInspectorPresented)
+                    .accessibilityIdentifier("SplitView.inspector.landmarkDetail.\(landmark.id)")
             } else {
                 EmptyView()
+                    .accessibilityIdentifier("SplitView.inspector.empty")
             }
         }
+        .accessibilityIdentifier("SplitView.root")
     }
 }
 

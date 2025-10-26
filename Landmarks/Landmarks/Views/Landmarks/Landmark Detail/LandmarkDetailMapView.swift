@@ -18,7 +18,6 @@ struct LandmarkDetailMapView: View {
         Map(position: $mapCameraPositionForLandmark, interactionModes: []) {
             if let landmarkMapItem = landmarkMapItem {
                 Marker(item: landmarkMapItem)
-                    .accessibilityIdentifier("LandmarkDetailMapView.marker.\(landmark.id)")
             }
         }
         .onAppear {

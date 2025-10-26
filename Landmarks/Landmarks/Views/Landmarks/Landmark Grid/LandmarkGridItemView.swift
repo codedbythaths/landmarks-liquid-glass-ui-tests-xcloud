@@ -26,7 +26,11 @@ struct LandmarkGridItemView: View {
                     .multilineTextAlignment(.center)
                     .foregroundColor(.white)
                     .padding(.bottom)
+                    .accessibilityIdentifier("LandmarkGridItem.name.\(landmark.id)")
             }
+            .accessibilityIdentifier("LandmarkGridItem.image.\(landmark.id)")
+            .accessibilityElement(children: .contain)
+            .accessibilityIdentifier("LandmarkGridItem.container.\(landmark.id)")
     }
 }
 

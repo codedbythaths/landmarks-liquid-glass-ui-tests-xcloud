@@ -18,11 +18,13 @@ struct CollectionsView: View {
             LazyVStack {
                 HStack {
                     CollectionTitleView(title: "Favorites", comment: "Section title above favorite collections.")
+                        .accessibilityIdentifier("collectionsView.sectionHeader.favorites")
                     Spacer()
                 }
                 .padding(.leading, Constants.leadingContentInset)
                 
                 LandmarkHorizontalListView(landmarkList: modelData.favoritesCollection.landmarks)
+                    .accessibilityIdentifier("collectionsView.favorites.horizontalList")
                     .containerRelativeFrame(.vertical) { height, axis in
                         let proposedHeight = height * Constants.landmarkListPercentOfHeight
                         if proposedHeight > Constants.landmarkListMinimumHeight {
@@ -33,13 +35,16 @@ struct CollectionsView: View {
 
                 HStack {
                     CollectionTitleView(title: "My Collections", comment: "Section title above the person's collections.")
+                        .accessibilityIdentifier("collectionsView.sectionHeader.myCollections")
                     Spacer()
                 }
                 .padding(.leading, Constants.leadingContentInset)
                 
                 CollectionsGrid()
+                    .accessibilityIdentifier("collectionsView.collectionsGrid.container")
                     .padding(.leading, Constants.leadingContentInset)
             }
+            .accessibilityIdentifier("collectionsView.stack")
         }
         .ignoresSafeArea(.keyboard, edges: [.bottom])
         .navigationTitle("Collections")
@@ -51,6 +56,7 @@ struct CollectionsView: View {
                 } label: {
                     Image(systemName: "plus")
                 }
+                .accessibilityIdentifier("collectionsView.toolbar.addCollectionButton")
             }
         }
         .navigationDestination(for: Landmark.self) { landmark in
@@ -59,6 +65,7 @@ struct CollectionsView: View {
         .navigationDestination(for: LandmarkCollection.self) { collection in
             CollectionDetailView(collection: collection)
         }
+        .accessibilityIdentifier("collectionsView.scrollView")
     }
 }
 
