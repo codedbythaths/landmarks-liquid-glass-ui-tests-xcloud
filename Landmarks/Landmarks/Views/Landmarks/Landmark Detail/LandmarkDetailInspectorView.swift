@@ -25,19 +25,25 @@ struct LandmarkDetailInspectorView: View {
             Picker("View Mode", selection: $selectedSegment) {
                 Text("Map (Picker)", comment: "Picker element that lets people switch the content of the Inspector to 'map'.")
                     .tag(Segment.metadataAndMap)
+                    .accessibilityIdentifier("Inspector.picker.option.map")
                 Text("Activities (Picker)", comment: "Picker element that lets people switch the content of the Inspector to 'activities'.")
                     .tag(Segment.activities)
+                    .accessibilityIdentifier("Inspector.picker.option.activities")
             }
             .labelsHidden()
             .pickerStyle(SegmentedPickerStyle())
             .padding()
+            .accessibilityIdentifier("Inspector.modePicker")
             
             if selectedSegment == .metadataAndMap {
                 LandmarkInspectorFormView(landmark: landmark)
+                    .accessibilityIdentifier("Inspector.content.mapAndMetadata")
             } else {
                 LandmarkInspectorBadgeView(landmark: landmark)
+                    .accessibilityIdentifier("Inspector.content.activities")
             }
         }
+        .accessibilityIdentifier("LandmarkDetailInspectorView.root")
         #if os(iOS)
         .toolbarVisibility(UIDevice.current.userInterfaceIdiom == .phone ? .visible : .hidden, for: .automatic)
         .toolbar {
@@ -47,6 +53,7 @@ struct LandmarkDetailInspectorView: View {
                 } label: {
                     Label("Close", systemImage: "xmark")
                 }
+                .accessibilityIdentifier("Inspector.toolbar.closeButton")
             }
         }
         #endif
@@ -64,15 +71,23 @@ private struct LandmarkInspectorFormView: View {
                 LandmarkDetailMapView(landmark: landmark, landmarkMapItem: modelData.mapItemsByLandmarkId[landmark.id])
                 .aspectRatio(Constants.mapAspectRatio, contentMode: .fit)
                 .cornerRadius(Constants.cornerRadius)
+                .accessibilityIdentifier("Inspector.map.section.mapView")
             }
+            .accessibilityIdentifier("Inspector.map.section")
             Section("Metadata") {
                 LabeledContent("Coordinates", value: landmark.formattedCoordinates)
+                    .accessibilityIdentifier("Inspector.metadata.coordinates")
                 LabeledContent("Total Area", value: landmark.formattedTotalArea)
+                    .accessibilityIdentifier("Inspector.metadata.totalArea")
                 LabeledContent("Elevation", value: landmark.formattedElevation)
+                    .accessibilityIdentifier("Inspector.metadata.elevation")
                 LabeledContent("Location", value: landmark.formattedLocation)
+                    .accessibilityIdentifier("Inspector.metadata.location")
             }
             .multilineTextAlignment(.trailing)
+            .accessibilityIdentifier("Inspector.metadata.section")
         }
+        .accessibilityIdentifier("Inspector.form")
     }
 }
 
@@ -90,30 +105,41 @@ private struct LandmarkInspectorBadgeView: View {
                         LazyVGrid(columns: columns, spacing: Constants.standardPadding) {
                             ForEach(activities, id: \.self) { activity in
                                 Text(activity.description)
+                                    .accessibilityIdentifier("Inspector.activities.activityLabel.\(activity.rawValue)")
                                 BadgeProgressView(activity: activity, badgeProgress: badgeProgress)
+                                    .accessibilityIdentifier("Inspector.activities.progress.\(activity.rawValue)")
                             }
                         }
+                        .accessibilityIdentifier("Inspector.activities.grid")
                     }
+                    .accessibilityIdentifier("Inspector.activities.section")
                     if badgeProgress.earned {
                         Section() {
                             VStack {
                                 HStack {
                                     Spacer()
                                     EarnedBadgeView(badge: badge)
+                                        .accessibilityIdentifier("Inspector.activities.earnedBadge.image.\(badge.id)")
                                     Spacer()
                                 }
                                 Text("You earned the \(landmark.name) badge!", comment: "Text that indicates you earned a badge for a landmark.")
                                     .multilineTextAlignment(.center)
+                                    .accessibilityIdentifier("Inspector.activities.earnedBadge.message")
                             }
+                            .accessibilityIdentifier("Inspector.activities.earnedBadge.container")
                         }
+                        .accessibilityIdentifier("Inspector.activities.earnedBadge.section")
                     }
                 }
+                .accessibilityIdentifier("Inspector.activities.form")
             } else {
                 Spacer()
                 Text("There isn’t a badge for this landmark.", comment: "Text that indicates the landmark doesn't have a badge.")
+                    .accessibilityIdentifier("Inspector.activities.noneMessage")
                 Spacer()
             }
         }
+        .accessibilityIdentifier("Inspector.activities.root")
     }
 }
 
@@ -133,6 +159,7 @@ private struct EarnedBadgeView: View {
                            height: Constants.earnedBadgeSize)
             })
             .padding(Constants.badgeImagePadding)
+            .accessibilityIdentifier("EarnedBadgeView.image.\(badge.id)")
     }
 }
 
@@ -147,11 +174,13 @@ private struct BadgeProgressView: View {
                     .symbolRenderingMode(.palette)
                     .foregroundStyle(.white, .indigo)
                     .font(.title)
+                    .accessibilityIdentifier("BadgeProgressView.icon.completed.\(activity.rawValue)")
             } else {
                 Image(systemName: "circle")
                     .symbolRenderingMode(.palette)
                     .foregroundStyle(.gray)
                     .font(.title)
+                    .accessibilityIdentifier("BadgeProgressView.icon.incomplete.\(activity.rawValue)")
             }
         }
         .onTapGesture {
@@ -161,6 +190,7 @@ private struct BadgeProgressView: View {
                 badgeProgress.add(activity)
             }
         }
+        .accessibilityIdentifier("BadgeProgressView.container.\(activity.rawValue)")
     }
 }
 
@@ -170,4 +200,6 @@ private struct BadgeProgressView: View {
 
     return LandmarkDetailInspectorView(landmark: modelData.selectedLandmark!, inspectorIsPresented: .constant(true))
         .environment(modelData)
+        .accessibilityIdentifier("LandmarkDetailInspectorView.previewRoot")
 }
+

@@ -25,8 +25,11 @@ struct BadgesView: View {
                                 .glassEffect(.regular, in: .rect(cornerRadius: Constants.badgeCornerRadius))
                                 // Adds an identifier to the badge for animation.
                                 .glassEffectID($0.id, in: namespace)
+                                // Accessibility identifier for each badge image.
+                                .accessibilityIdentifier("BadgesView.badge.\($0.id)")
                         }
                     }
+                    .accessibilityIdentifier("BadgesView.badgeStack")
                 }
 
                 Button {
@@ -46,9 +49,12 @@ struct BadgesView: View {
                 #endif
                 // Adds an identifier to the button for animation.
                 .glassEffectID("togglebutton", in: namespace)
+                .accessibilityIdentifier("BadgesView.toggleButton")
             }
             .frame(width: Constants.badgeFrameWidth)
+            .accessibilityIdentifier("BadgesView.containerStack")
         }
+        .accessibilityIdentifier("BadgesView.glassContainer")
     }
 }
 
@@ -69,6 +75,7 @@ private struct BadgeLabel: View {
             })
             .padding(Constants.badgeImagePadding)
             .accessibilityLabel(Text(badge.badgeName))
+            .accessibilityIdentifier("BadgeLabel.image.\(badge.id)")
     }
 }
 
@@ -82,6 +89,7 @@ private struct ToggleBadgesLabel: View {
         .font(.system(size: Constants.toggleButtonFontSize))
         .fontWeight(.medium)
         .imageScale(.large)
+        .accessibilityIdentifier("BadgesView.toggleLabel.\(isExpanded ? "hide" : "show")")
     }
 }
 
@@ -89,6 +97,7 @@ private struct ToggleBadgesLabel: View {
     @Previewable @State var model = ModelData()
     BadgesView()
         .environment(model)
+        .accessibilityIdentifier("BadgesView.previewRoot")
 }
 
 /// A view modifier that places ``BadgesView`` over a modified view, in the lower trailing corner.
@@ -96,15 +105,19 @@ private struct ShowsBadgesViewModifier: ViewModifier {
     func body(content: Content) -> some View {
         ZStack {
             content
+                .accessibilityIdentifier("ShowsBadgesViewModifier.content")
             HStack {
                 Spacer()
                 VStack {
                     Spacer()
                     BadgesView()
                         .padding()
+                        .accessibilityIdentifier("ShowsBadgesViewModifier.badgesView")
                 }
             }
+            .accessibilityIdentifier("ShowsBadgesViewModifier.overlayStack")
         }
+        .accessibilityIdentifier("ShowsBadgesViewModifier.root")
     }
 }
 
@@ -116,3 +129,4 @@ extension View {
         modifier(ShowsBadgesViewModifier())
     }
 }
+

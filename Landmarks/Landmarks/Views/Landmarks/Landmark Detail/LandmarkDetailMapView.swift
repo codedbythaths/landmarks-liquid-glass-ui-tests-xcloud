@@ -18,11 +18,13 @@ struct LandmarkDetailMapView: View {
         Map(position: $mapCameraPositionForLandmark, interactionModes: []) {
             if let landmarkMapItem = landmarkMapItem {
                 Marker(item: landmarkMapItem)
+                    .accessibilityIdentifier("LandmarkDetailMapView.marker.\(landmark.id)")
             }
         }
         .onAppear {
             mapCameraPositionForLandmark = .region(landmark.coordinateRegion)
         }
+        .accessibilityIdentifier("LandmarkDetailMapView.map.\(landmark.id)")
     }
 }
 
@@ -32,4 +34,6 @@ struct LandmarkDetailMapView: View {
     let previewMapItem = modelData.mapItemsByLandmarkId[1012]
 
     LandmarkDetailMapView(landmark: previewLandmark, landmarkMapItem: previewMapItem)
+        .accessibilityIdentifier("LandmarkDetailMapView.previewRoot")
 }
+
